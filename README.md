@@ -147,3 +147,5 @@ A successful JSON response from the email classification API, displaying the inp
 Hugging Face Deployment: https://huggingface.co/spaces/chittisvr/email-classifier
 
 GitHub Repository:https://github.com/sindhu-rkreddy/Email_classification
+
+# Designed and executed by : R SINDHU
