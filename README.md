@@ -1,4 +1,17 @@
-<<<<<<< HEAD
+---
+title: Email Classification API
+emoji: 📧
+colorFrom: purple
+colorTo: indigo
+sdk: docker
+app_file: main.py
+pinned: false
+---
+
+# Email Classification for Support Team
+
+This project implements an email classification system...
+(Your existing README content goes here)
 # Email Classification System
 
 This repository contains the implementation for an email classification system that categorizes incoming support emails and masks Personally Identifiable Information (PII) before processing.
