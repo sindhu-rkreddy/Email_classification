@@ -8,12 +8,12 @@ app_file: main.py
 pinned: false
 ---
 
-title: Secure Email Management System with PII Masking emoji: 📧 colorFrom: purple colorTo: indigo sdk: docker app_file: main.py pinned: false
+# Title: Secure Email Management System with PII Masking emoji: 📧 colorFrom: purple colorTo: indigo sdk: docker app_file: main.py pinned: false
 Secure Email Management System with PII Masking
-1. Project Overview
+## 1. Project Overview
 This project implements a FastAPI for email classification and PII masking, utilizing machine learning models. Containerized with Docker, the API is deployed on Hugging Face Spaces, offering public access and interactive testing. It efficiently classifies emails, masks sensitive data, and facilitates demasking.
 
-2. Problem Statement
+## 2. Problem Statement
 Given an incoming email text, the system should:
 
 Accurately classify the email into one of several predefined categories (e.g., Sales, HR, Marketing).
@@ -24,39 +24,39 @@ Provide functionality to demask previously masked PII using a provided mapping.
 
 Return all processing results (e.g., masked text, classification, extracted PII) in a well-defined JSON format.
 
-3. Model Details
+## 3. Model Details
 Overall Approach: Employs a two-pronged machine learning strategy for distinct tasks.
 
-Email Classification:
+### Email Classification:
 
-Feature Extraction: Uses a TF-IDF Vectorizer to transform text into numerical features, capturing word importance.
+### Feature Extraction: Uses a TF-IDF Vectorizer to transform text into numerical features, capturing word importance.
 
-Classifier: Employs a supervised machine learning classifier (e.g., Logistic Regression or similar scikit-learn model, based on your training choice) trained on categorized email datasets.
+### Classifier: Employs a supervised machine learning classifier (e.g., Logistic Regression or similar scikit-learn model, based on your training choice) trained on categorized email datasets.
 
-PII Detection:
+### PII Detection:
 
-Library Used: Utilizes the spaCy library.
+### Library Used: Utilizes the spaCy library.
 
-Specific Model: Leverages spaCy's pre-trained statistical model, en_core_web_sm, for Named Entity Recognition (NER).
+### Specific Model: Leverages spaCy's pre-trained statistical model, en_core_web_sm, for Named Entity Recognition (NER).
 
-Functionality: Identifies various PII types including names, phone numbers, email addresses, and locations.
+### Functionality: Identifies various PII types including names, phone numbers, email addresses, and locations.
 
-4. System Pipeline
-Input: Accepts JSON payload containing the email text (e.g., in an input_email_body field) for processing.
+## 4. System Pipeline
+### Input: Accepts JSON payload containing the email text (e.g., in an input_email_body field) for processing.
 
-Text Preprocessing: The raw input text undergoes cleaning, including lowercasing, removal of punctuation, special characters, and digits, and elimination of common stopwords.
+### Text Preprocessing: The raw input text undergoes cleaning, including lowercasing, removal of punctuation, special characters, and digits, and elimination of common stopwords.
 
-PII Detection & Masking: Utilizes spaCy's NER model to identify and then mask sensitive PII (e.g., names, phone numbers) within the cleaned text using designated placeholders.
+### PII Detection & Masking: Utilizes spaCy's NER model to identify and then mask sensitive PII (e.g., names, phone numbers) within the cleaned text using designated placeholders.
 
-Text Vectorization: For classification purposes, the (potentially masked) text is transformed into numerical features using the pre-trained TF-IDF Vectorizer.
+### Text Vectorization: For classification purposes, the (potentially masked) text is transformed into numerical features using the pre-trained TF-IDF Vectorizer.
 
-Email Classification: The vectorized text is fed into the trained machine learning model to predict the email's category.
+### Email Classification: The vectorized text is fed into the trained machine learning model to predict the email's category.
 
-Output Generation: Assembles the processed results, including the masked text, identified PII mapping (if applicable), and the predicted email category.
+### Output Generation: Assembles the processed results, including the masked text, identified PII mapping (if applicable), and the predicted email category.
 
-Output: Returns a structured JSON response containing the processed information.
+### Output: Returns a structured JSON response containing the processed information.
 
-5. PII Detection & Masking
+## 5. PII Detection & Masking
 Types of PII detected include:
 
 Phone Numbers
@@ -71,7 +71,7 @@ Expiry Numbers
 
 Each entity is replaced with a corresponding placeholder like [phone], [aadhar_num], etc., and recorded in a list with position, classification, and original text.
 
-6. API Endpoints
+## 6. API Endpoints
 GET /
 Description: Health check endpoint.
 
@@ -107,7 +107,7 @@ Response:
 
 (Note: The category_of_the_email will be one of "Incident", "Request", "Change", or "Problem".)
 
-7. Sample Testing via curl
+## 7. Sample Testing via curl
 Using curl (for Linux, macOS, or Git Bash on Windows):
 
 curl -X POST "[https://chittisvr-email-classifier.hf.space/classify](https://chittisvr-email-classifier.hf.space/classify)" \
@@ -123,7 +123,7 @@ Invoke-RestMethod -Uri "[https://chittisvr-email-classifier.hf.space/classify](h
 Using FastAPI's Interactive Docs (Recommended for easy testing):
 Visit https://chittisvr-email-classifier.hf.space/docs in your web browser, expand the /classify endpoint, click "Try it out", and then "Execute".
 
-8. Deployment & Source Code Links
+## 8. Deployment & Source Code Links
 Hugging Face Deployment: https://huggingface.co/spaces/chittisvr/email-classifier
 
 GitHub Repository:https://github.com/sindhu-rkreddy/Email_classification
