@@ -123,6 +123,11 @@ Invoke-RestMethod -Uri "[https://chittisvr-email-classifier.hf.space/classify](h
 Using FastAPI's Interactive Docs (Recommended for easy testing):
 Visit https://chittisvr-email-classifier.hf.space/docs in your web browser, expand the /classify endpoint, click "Try it out", and then "Execute".
 
+## Observatioins
+![Image](https://github.com/user-attachments/assets/fce1df6a-f9e6-45d7-99e3-5f2f61b3b14d)
+![Image](https://github.com/user-attachments/assets/651a3ca1-2724-4075-9f3d-26ab71277406)
+![Image](https://github.com/user-attachments/assets/67ecd8cc-f8df-4c0e-a809-81ab4836067e)
+
 ## 8. Deployment & Source Code Links
 Hugging Face Deployment: https://huggingface.co/spaces/chittisvr/email-classifier
 
