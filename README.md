@@ -135,11 +135,13 @@ Visit https://chittisvr-email-classifier.hf.space/docs in your web browser, expa
 
 ## Observatioins
 Terminal output with a classification report for an email model, including precision, recall, f1-score, and accuracy metrics for different categories like Change, Incident, Problem, and Request.
-![Image](https://github.com/user-attachments/assets/67ecd8cc-f8df-4c0e-a809-81ab4836067e)
- A JSON request body for the email classification API.
 ![Image](https://github.com/user-attachments/assets/fce1df6a-f9e6-45d7-99e3-5f2f61b3b14d)
-A successful JSON response from the email classification API, displaying the input_email_body, an empty list_of_masked_entities, the masked_email, and the category_of_the_email as "Incident". It also shows response headers.
+
+ A JSON request body for the email classification API.
 ![Image](https://github.com/user-attachments/assets/651a3ca1-2724-4075-9f3d-26ab71277406)
+
+A successful JSON response from the email classification API, displaying the input_email_body, an empty list_of_masked_entities, the masked_email, and the category_of_the_email as "Incident". It also shows response headers.
+![Image](https://github.com/user-attachments/assets/67ecd8cc-f8df-4c0e-a809-81ab4836067e)
 
 ## 8. Deployment & Source Code Links
 Hugging Face Deployment: https://huggingface.co/spaces/chittisvr/email-classifier
