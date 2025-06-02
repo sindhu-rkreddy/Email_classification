@@ -10,11 +10,7 @@ pinned: false
 
 # Email Classification for Support Team
 
-This project implements an email classification system...
-(Your existing README content goes here)
-# Email Classification System
-
-This repository contains the implementation for an email classification system that categorizes incoming support emails and masks Personally Identifiable Information (PII) before processing.
+This project implements an email classification system that categorizes incoming support emails and masks Personally Identifiable Information (PII) before processing.
 
 ## Project Structure
 
@@ -143,7 +139,4 @@ This repository contains the implementation for an email classification system t
 
 Refer to the original assignment document for the detailed evaluation criteria, including API deployment, code quality, GitHub submission, test case coverage, and report detail.
 
-
-
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
- b73bbda287f6d66886564890b2c8128a76484839
