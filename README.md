@@ -29,32 +29,42 @@ Overall Approach: Employs a two-pronged machine learning strategy for distinct t
 
 ### Email Classification:
 
-### Feature Extraction: Uses a TF-IDF Vectorizer to transform text into numerical features, capturing word importance.
+### Feature Extraction
+Uses a TF-IDF Vectorizer to transform text into numerical features, capturing word importance.
 
-### Classifier: Employs a supervised machine learning classifier (e.g., Logistic Regression or similar scikit-learn model, based on your training choice) trained on categorized email datasets.
+### Classifier
+Employs a supervised machine learning classifier (e.g., Logistic Regression or similar scikit-learn model, based on your training choice) trained on categorized email datasets.
 
-### PII Detection:
+### PII Detection
 
-### Library Used: Utilizes the spaCy library.
+### Library Used
+Utilizes the spaCy library.
 
-### Specific Model: Leverages spaCy's pre-trained statistical model, en_core_web_sm, for Named Entity Recognition (NER).
+### Specific Model
+Leverages spaCy's pre-trained statistical model, en_core_web_sm, for Named Entity Recognition (NER).
 
-### Functionality: Identifies various PII types including names, phone numbers, email addresses, and locations.
+### Functionality
+Identifies various PII types including names, phone numbers, email addresses, and locations.
 
 ## 4. System Pipeline
 ### Input: Accepts JSON payload containing the email text (e.g., in an input_email_body field) for processing.
 
-### Text Preprocessing: The raw input text undergoes cleaning, including lowercasing, removal of punctuation, special characters, and digits, and elimination of common stopwords.
+### Text Preprocessing
+The raw input text undergoes cleaning, including lowercasing, removal of punctuation, special characters, and digits, and elimination of common stopwords.
 
-### PII Detection & Masking: Utilizes spaCy's NER model to identify and then mask sensitive PII (e.g., names, phone numbers) within the cleaned text using designated placeholders.
+### PII Detection & Masking
+Utilizes spaCy's NER model to identify and then mask sensitive PII (e.g., names, phone numbers) within the cleaned text using designated placeholders.
 
 ### Text Vectorization: For classification purposes, the (potentially masked) text is transformed into numerical features using the pre-trained TF-IDF Vectorizer.
 
-### Email Classification: The vectorized text is fed into the trained machine learning model to predict the email's category.
+### Email Classification
+The vectorized text is fed into the trained machine learning model to predict the email's category.
 
-### Output Generation: Assembles the processed results, including the masked text, identified PII mapping (if applicable), and the predicted email category.
+### Output Generation
+Assembles the processed results, including the masked text, identified PII mapping (if applicable), and the predicted email category.
 
-### Output: Returns a structured JSON response containing the processed information.
+### Output
+Returns a structured JSON response containing the processed information.
 
 ## 5. PII Detection & Masking
 Types of PII detected include:
@@ -124,9 +134,12 @@ Using FastAPI's Interactive Docs (Recommended for easy testing):
 Visit https://chittisvr-email-classifier.hf.space/docs in your web browser, expand the /classify endpoint, click "Try it out", and then "Execute".
 
 ## Observatioins
-![Image](https://github.com/user-attachments/assets/fce1df6a-f9e6-45d7-99e3-5f2f61b3b14d)
-![Image](https://github.com/user-attachments/assets/651a3ca1-2724-4075-9f3d-26ab71277406)
+Terminal output with a classification report for an email model, including precision, recall, f1-score, and accuracy metrics for different categories like Change, Incident, Problem, and Request.
 ![Image](https://github.com/user-attachments/assets/67ecd8cc-f8df-4c0e-a809-81ab4836067e)
+ A JSON request body for the email classification API.
+![Image](https://github.com/user-attachments/assets/fce1df6a-f9e6-45d7-99e3-5f2f61b3b14d)
+A successful JSON response from the email classification API, displaying the input_email_body, an empty list_of_masked_entities, the masked_email, and the category_of_the_email as "Incident". It also shows response headers.
+![Image](https://github.com/user-attachments/assets/651a3ca1-2724-4075-9f3d-26ab71277406)
 
 ## 8. Deployment & Source Code Links
 Hugging Face Deployment: https://huggingface.co/spaces/chittisvr/email-classifier
