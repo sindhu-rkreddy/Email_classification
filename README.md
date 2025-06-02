@@ -8,135 +8,122 @@ app_file: main.py
 pinned: false
 ---
 
-# Email Classification for Support Team
+title: Secure Email Management System with PII Masking emoji: 📧 colorFrom: purple colorTo: indigo sdk: docker app_file: main.py pinned: false
+Secure Email Management System with PII Masking
+1. Project Overview
+This project implements a FastAPI for email classification and PII masking, utilizing machine learning models. Containerized with Docker, the API is deployed on Hugging Face Spaces, offering public access and interactive testing. It efficiently classifies emails, masks sensitive data, and facilitates demasking.
 
-This project implements an email classification system that categorizes incoming support emails and masks Personally Identifiable Information (PII) before processing.
+2. Problem Statement
+Given an incoming email text, the system should:
 
-## Project Structure
+Accurately classify the email into one of several predefined categories (e.g., Sales, HR, Marketing).
 
-.
-├── .gitignore
-├── README.md
-├── requirements.txt
-├── main.py             # Entry point for the FastAPI application
-├── models.py           # ML model training and inference logic
-└── utils.py            # General-purpose utility functions (PII masking)
+Detect and mask any personally identifiable information (PII) present within the email content.
 
+Provide functionality to demask previously masked PII using a provided mapping.
 
-## Setup Instructions
+Return all processing results (e.g., masked text, classification, extracted PII) in a well-defined JSON format.
 
-1.  **Clone the Repository:**
+3. Model Details
+Overall Approach: Employs a two-pronged machine learning strategy for distinct tasks.
 
-    ```bash
-    git clone <your-repository-link>
-    cd <your-repository-name>
-    ```
+Email Classification:
 
-2.  **Create a Virtual Environment (Recommended):**
+Feature Extraction: Uses a TF-IDF Vectorizer to transform text into numerical features, capturing word importance.
 
-    ```bash
-    python -m venv venv
-    # On Windows
-    .\venv\Scripts\activate
-    # On macOS/Linux
-    source venv/bin/activate
-    ```
+Classifier: Employs a supervised machine learning classifier (e.g., Logistic Regression or similar scikit-learn model, based on your training choice) trained on categorized email datasets.
 
-3.  **Install Dependencies:**
+PII Detection:
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+Library Used: Utilizes the spaCy library.
 
-4.  **Place the Dataset:**
-    Ensure the `combined_emails_with_natural_pii.csv` dataset is placed in the root directory of the project.
+Specific Model: Leverages spaCy's pre-trained statistical model, en_core_web_sm, for Named Entity Recognition (NER).
 
-5.  **Train the Model (Optional - for initial setup or retraining):**
-    The `main.py` will attempt to train the model if `email_classifier_model.joblib` and `tfidf_vectorizer.joblib` are not found. However, you can explicitly run the training script:
+Functionality: Identifies various PII types including names, phone numbers, email addresses, and locations.
 
-    ```bash
-    python models.py
-    ```
-    This will generate `email_classifier_model.joblib` and `tfidf_vectorizer.joblib` files in the root directory after training.
+4. System Pipeline
+Input: Accepts JSON payload containing the email text (e.g., in an input_email_body field) for processing.
 
-## Local Usage
+Text Preprocessing: The raw input text undergoes cleaning, including lowercasing, removal of punctuation, special characters, and digits, and elimination of common stopwords.
 
-1.  **Run the FastAPI Application:**
+PII Detection & Masking: Utilizes spaCy's NER model to identify and then mask sensitive PII (e.g., names, phone numbers) within the cleaned text using designated placeholders.
 
-    ```bash
-    uvicorn main:app --host 0.0.0.0 --port 8000
-    ```
+Text Vectorization: For classification purposes, the (potentially masked) text is transformed into numerical features using the pre-trained TF-IDF Vectorizer.
 
-    The API will be accessible at `http://0.0.0.0:8000`.
+Email Classification: The vectorized text is fed into the trained machine learning model to predict the email's category.
 
-2.  **Test the Endpoint:**
-    You can test the `/classify` endpoint using `curl`, Postman, or any API client.
+Output Generation: Assembles the processed results, including the masked text, identified PII mapping (if applicable), and the predicted email category.
 
-    **Example POST Request (using `curl`):**
+Output: Returns a structured JSON response containing the processed information.
 
-    ```bash
-    curl -X POST "[http://0.0.0.0:8000/classify](http://0.0.0.0:8000/classify)" \
-         -H "Content-Type: application/json" \
-         -d '{
-               "input_email_body": "Subject: Urgent issue, my name is John Doe and my email is john.doe@example.com. Please help with my account."
-             }'
-    ```
+5. PII Detection & Masking
+Types of PII detected include:
 
-    **Expected Output Format:**
+Phone Numbers
 
-    ```json
+Email Addresses
+
+Aadhar Numbers
+
+Dates
+
+Expiry Numbers
+
+Each entity is replaced with a corresponding placeholder like [phone], [aadhar_num], etc., and recorded in a list with position, classification, and original text.
+
+6. API Endpoints
+GET /
+Description: Health check endpoint.
+
+Response:
+
+{"detail":"Not Found"}
+
+(Note: This is the default FastAPI response for the root path if no specific GET endpoint is defined. Your API is fully functional at /classify.)
+
+POST /classify
+Description: Accepts email content and returns classification with PII masking.
+
+Request Body:
+
+{
+  "input_email_body": "Subject: Important: KYC Update, my Aadhar number is 1234-5678-9123."
+}
+
+Response:
+
+{
+  "input_email_body": "Subject: Important: KYC Update, my Aadhar number is 1234-5678-9123.",
+  "list_of_masked_entities": [
     {
-      "input_email_body": "Subject: Urgent issue, my name is John Doe and my email is john.doe@example.com. Please help with my account.",
-      "list_of_masked_entities": [
-        {
-          "position": [40, 48],
-          "classification": "full_name",
-          "entity": "John Doe"
-        },
-        {
-          "position": [69, 89],
-          "classification": "email",
-          "entity": "john.doe@example.com"
-        }
-      ],
-      "masked_email": "Subject: Urgent issue, my name is [full_name] and my email is [email]. Please help with my account.",
-      "category_of_the_email": "Request" # Or "Incident", "Change", "Problem"
+      "position": [45, 60],
+      "classification": "aadhar_num",
+      "entity": "1234-5678-9123"
     }
-    ```
+  ],
+  "masked_email": "Subject: Important: KYC Update, my Aadhar number is [aadhar_num].",
+  "category_of_the_email": "Request"
+}
 
-## Deployment on Hugging Face Spaces
+(Note: The category_of_the_email will be one of "Incident", "Request", "Change", or "Problem".)
 
-1.  **Create a Hugging Face Space:**
-    Go to [Hugging Face Spaces](https://huggingface.co/spaces) and create a new Space.
-    * Choose "Docker" as the SDK (or "Gradio" if you want a UI, but the assignment specifies no frontend).
-    * Select a suitable Docker image (e.g., `python-latest`).
+7. Sample Testing via curl
+Using curl (for Linux, macOS, or Git Bash on Windows):
 
-2.  **Connect your GitHub Repository:**
-    Link your Hugging Face Space to this GitHub repository. Hugging Face will automatically detect your `requirements.txt` and `main.py` (or whatever you set as the entry point) and build the application.
+curl -X POST "[https://chittisvr-email-classifier.hf.space/classify](https://chittisvr-email-classifier.hf.space/classify)" \
+     -H "Content-Type: application/json" \
+     -d '{
+           "input_email_body": "Subject: Urgent issue, my name is John Doe and my email is john.doe@example.com. Please help with my account."
+         }'
 
-3.  **Ensure `combined_emails_with_natural_pii.csv` and `.joblib` files are available:**
-    * **Dataset:** Make sure `combined_emails_with_natural_pii.csv` is committed to your repository.
-    * **Trained Models:** It's highly recommended to train the model locally (`python models.py`) and commit the generated `email_classifier_model.joblib` and `tfidf_vectorizer.joblib` files to your repository *before* deploying to Hugging Face Spaces. This avoids the need for retraining on every deployment. If the files are not present, the `main.py` will attempt to train during startup, which might be slow.
+Using PowerShell (Invoke-RestMethod):
 
-4.  **Hugging Face Spaces `app.py` (for Docker/Custom SDK):**
-    If you're using a custom Dockerfile or a generic SDK, you might need to specify the command to run your FastAPI app. For a standard Python Space, it often automatically runs `main.py` if it detects FastAPI. If not, you might need an `app.py` or `.env` file to configure the startup command for `uvicorn`.
+Invoke-RestMethod -Uri "[https://chittisvr-email-classifier.hf.space/classify](https://chittisvr-email-classifier.hf.space/classify)" -Method POST -Headers @{"Content-Type"="application/json"} -Body '{ "input_email_body": "Subject: Urgent issue, my name is John Doe and my email is john.doe@example.com. Please help with my account." }' | ConvertTo-Json -Depth 4
 
-    Example `app.py` (if `main.py` isn't picked up automatically):
+Using FastAPI's Interactive Docs (Recommended for easy testing):
+Visit https://chittisvr-email-classifier.hf.space/docs in your web browser, expand the /classify endpoint, click "Try it out", and then "Execute".
 
-    ```python
-    # app.py
-    from main import app
-    ```
-    Then, configure your Space to run `uvicorn app:app --host 0.0.0.0 --port 7860` (Hugging Face Spaces often use port 7860).
+8. Deployment & Source Code Links
+Hugging Face Deployment: https://huggingface.co/spaces/chittisvr/email-classifier
 
-5.  **Access the API Endpoint:**
-    Once deployed, your API endpoint will be available at:
-    `https://<your-username>-<your-space-name>.hf.space/classify`
-
-    **Important Note:** The evaluation system will hit this precise endpoint, so ensure it is configured correctly.
-
-## Evaluation Criteria
-
-Refer to the original assignment document for the detailed evaluation criteria, including API deployment, code quality, GitHub submission, test case coverage, and report detail.
-
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+GitHub Repository:https://github.com/sindhu-rkreddy/Email_classification
