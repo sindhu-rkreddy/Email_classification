@@ -143,15 +143,7 @@ This repository contains the implementation for an email classification system t
 
 Refer to the original assignment document for the detailed evaluation criteria, including API deployment, code quality, GitHub submission, test case coverage, and report detail.
 
----
-title: Email Classifier
-emoji: 📉
-colorFrom: purple
-colorTo: blue
-sdk: docker
-pinned: false
-license: apache-2.0
----
+
 
 Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
  b73bbda287f6d66886564890b2c8128a76484839
